@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { supabase } from './lib/supaBaseClient'
-import './assets/styles.css'
+import '@/assets/style.css'
 
 
 const applications = ref([])
