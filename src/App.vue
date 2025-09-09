@@ -1,11 +1,47 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { supabase } from './lib/supaBaseClient'
+import './assets/styles.css'
+
+
+const applications = ref([])
+
+
+async function getApplications() {
+  const { data } = await supabase.from('applications').select()
+  applications.value = data
+}
+
+onMounted(() => {
+   getApplications()
+})
+
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-</template>
+  <div class="main-container">
+    <h1>Portail des applications TICE</h1>
 
-<style scoped></style>
+    <h2>Plateformes utilisateurs</h2>
+    <div id="services-users">
+      <a v-for="app in applications.filter(app => app.useradmin)" 
+         :key="app.id"
+         :href="app.url"
+         class="service">
+        <img :src="app.img">
+        <span>{{ app.title }}</span>
+      </a>
+    </div>
+
+    <h2>Plateformes administration</h2>
+    <div id="services-admin">
+      <a v-for="app in applications.filter(app => !app.useradmin)" 
+         :key="app.id"
+         :href="app.url"
+         class="service">
+        <img :src="app.img">
+        <span>{{ app.title }}</span>
+      </a>
+    </div>
+  </div>
+</template>
